@@ -1,6 +1,0 @@
-# created by virtualenv automatically
-.idea
-Lib
-venv/Scripts
-venv/Login.py
-venv/boneyard.py
