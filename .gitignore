@@ -2,5 +2,5 @@
 .idea
 Lib
 Scripts
-C:\Users\josmoors.ANT\PycharmProjects\selenium\QuickSight_DailyFaults\venv\boneyard.py
-login.py
+venv/Login.py
+venv/boneyard.py
