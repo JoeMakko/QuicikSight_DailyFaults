@@ -1,4 +1,3 @@
 # created by virtualenv automatically
 venv/Lib
-idea
-boneyard
+venv/Scripts
