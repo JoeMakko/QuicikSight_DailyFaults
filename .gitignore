@@ -1,6 +1,6 @@
 # created by virtualenv automatically
 .idea
-Lib
+Libs
 Scripts
 venv/boneyard.py
 /venv/login.py
