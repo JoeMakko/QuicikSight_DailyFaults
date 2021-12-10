@@ -1,5 +1,5 @@
 # created by virtualenv automatically
-/.idea
+.idea
 /venv/Lib
-/venv/Scripts
+/venv/Scriptsd
 /venv/boneyard.py
