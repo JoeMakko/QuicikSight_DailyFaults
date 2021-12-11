@@ -21,7 +21,10 @@ buildingTypeReset = ''
 
 organizationMain = '//*[@id="block-ccbe5567-76a4-406e-91c3-1a86b95c454d"]/div/div/button'
 organizationEllipsis = '//*[@id="block-ccbe5567-76a4-406e-91c3-1a86b95c454d"]/div/div/div/div[2]/button'
-organizationReset = ''
+organizationSearchField = '/html/body/div[7]/div[2]/ul/form/div/input'
+organizationAllSites = '/html/body/div[7]/div[2]/ul/ul/span/div/div/div/label/input'
+organizationKeySiteSelector = '/html/body/div[7]/div[2]/ul/ul/div/div/div/li/a/div/div/div/label/input'
+organizationKeySite = 'aza5'
 
 equipmentTypeMain = '//*[@id="block-7e3b4118-46e9-4df5-af2e-46cbd2eef8d5"]/div/div/button'
 equipmentTypeEllipsis = '//*[@id="block-7e3b4118-46e9-4df5-af2e-46cbd2eef8d5"]/div/div/div/div[2]/button'
@@ -102,20 +105,37 @@ def login(driver):
 
 ## wait for controls form ellipsis elements to populate
 def ellipsisElementsLoad():
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeEllipsis))) # buildingTypeEllipsis
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationEllipsis))) # organizationEllipsis
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeEllipsis))) # equipmentTypeEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmEllipsis))) # rmmEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, criticalityEllipsis))) # criticalityEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, oemEllipsis))) # oemEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, hasAbnormalityEllipsis))) # hasAbnormalityEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, descriptionEllipsis))) # descriptionEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentIdEllipsis))) # equipmentIdEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, areaEllipsis))) # areaEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, subAreaEllipsis))) # subAreaEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, locationEllipsis))) # locationEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, startDateEllipsis))) # startDateEllipsis = ''
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, endDateEllipsis))) # endDateEllipsis = ''
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, criticalityEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, oemEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, hasAbnormalityEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, descriptionEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentIdEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, areaEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, subAreaEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, locationEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, startDateEllipsis)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, endDateEllipsis)))
+
+def mainSelectorsLoad():
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, criticalityMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, oemMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, hasAbnormalityMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, descriptionMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentIdMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, areaMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, subAreaMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, locationMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, startDateMain)))
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, endDateMain)))
+
 
 class selectorFilter:
 
@@ -136,7 +156,7 @@ class selectorFilter:
         driver.wait.until(EC.presence_of_element_located((By.XPATH, self.XPath)))
         elementValue = driver.find_element(By.XPATH, self.XPath).get_attribute('title')
 
-        if elementValue == 'AZA5':
+        if elementValue == organizationKeySite:
             return True
         else:
             return False
@@ -148,6 +168,28 @@ class selectorFilter:
         time.sleep(0.25)
         reset = driver.find_element(By.XPATH, '/html/body/div[7]/div[2]/ul/ul/li[1]/a')
         reset.click()
+
+    def siteAssign(self):
+        mainSelectorsLoad()
+        driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
+        organization = driver.find_element(By.XPATH, organizationMain)
+        organization.click()
+        driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationAllSites)))
+        siteAll = driver.find_element(By.XPATH, organizationAllSites)
+        siteAll.click()
+        mainSelectorsLoad()
+        driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
+        organization = driver.find_element(By.XPATH, organizationMain)
+        organization.click()
+        driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationSearchField)))
+        searchField = driver.find_element(By.XPATH, organizationSearchField)
+        searchField.click()
+        searchField.send_keys(organizationKeySite)
+        driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationKeySiteSelector)))
+        keySiteSelect = driver.find_element(By.XPATH, organizationKeySiteSelector)
+        keySiteSelect.click()
+        mainSelectorsLoad()
+
 
 
 
@@ -195,7 +237,7 @@ while True:
     controlFilter = driver.find_element(By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div/div/a/div')
     controlFilter.click()
 
-        ### reset all fields ###
+        ### set all fields ###
     driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeMain)))
     buildingType = selectorFilter(buildingTypeMain, buildingTypeEllipsis)
     print(buildingType.fieldValuator())
@@ -207,6 +249,20 @@ while True:
     print(organization.siteValuator())
     if not organization.siteValuator():
         organization.reset()
+        organization.siteAssign()
+
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeMain)))
+    equipmentType = selectorFilter(equipmentTypeMain, equipmentTypeEllipsis)
+    print(equipmentType.fieldValuator())
+    if not equipmentType.fieldValuator():
+        equipmentType.reset()
+
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmMain)))
+    rmm = selectorFilter(rmmMain, rmmEllipsis)
+    print(rmm.fieldValuator())
+    if not rmm.fieldValuator():
+        rmm.reset()
+
 
     break
 
