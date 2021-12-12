@@ -136,6 +136,23 @@ def mainSelectorsLoad():
     driver.wait.until(EC.presence_of_element_located((By.XPATH, startDateMain)))
     driver.wait.until(EC.presence_of_element_located((By.XPATH, endDateMain)))
 
+def selectFaultsPage():
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[1]/div/div/div/div[7]')))
+    faultsField = driver.find_element(By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[1]/div/div/div/div[7]')
+    faultsField.click()
+
+def openControlsForm():
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div/div/a/div')))
+    controlFilter = driver.find_element(By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div/div/a/div')
+    controlFilter.click()
+
+def mainResetBtn():
+    mainSelectorsLoad()
+    mainResetBtn = driver.find_element(By.XPATH, '//*[@id="application-header"]/div/nav[2]/div/ul/div[1]/div[2]/button/div/span')
+    mainResetBtn.click()
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[2]/div/a/i')))
+    reopenCF = driver.find_element(By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[2]/div/a/i')
+    reopenCF.click()
 
 class selectorFilter:
 
@@ -190,21 +207,32 @@ class selectorFilter:
         keySiteSelect.click()
         mainSelectorsLoad()
 
+def cfEvaluator():
+    buildingType = selectorFilter(buildingTypeMain, buildingTypeEllipsis)
+    organization = selectorFilter(organizationMain, organizationEllipsis)
+    equipmentType = selectorFilter(equipmentTypeMain, equipmentTypeEllipsis)
+    rmm = selectorFilter(rmmMain, rmmEllipsis)
+    criticality = selectorFilter(criticalityMain, criticalityEllipsis)
+    oem = selectorFilter(oemMain, oemEllipsis)
+    hasAbnormality = selectorFilter(hasAbnormalityMain, hasAbnormalityEllipsis)
+    description = selectorFilter(descriptionMain, descriptionEllipsis)
+    equipmentId = selectorFilter(equipmentIdMain, equipmentIdEllipsis)
+    area = selectorFilter(areaMain, areaEllipsis)
+    subArea = selectorFilter(subAreaMain, subAreaEllipsis)
+    location = selectorFilter(locationMain, locationEllipsis)
 
+    if buildingType.fieldValuator() & organization.fieldValuator() & equipmentType.fieldValuator() & rmm.fieldValuator() & criticality.fieldValuator() & oem.fieldValuator() & hasAbnormality.fieldValuator() & description.fieldValuator() & equipmentId.fieldValuator() & area.fieldValuator() & subArea.fieldValuator() & location.fieldValuator():
+        return True
+    else:
+        return False
 
+def keySiteAssign():
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
+    organization = selectorFilter(organizationMain, organizationEllipsis)
+    organization.siteValuator()
+    organization.siteAssign()
 
-## Call main load
-driver = init_driver()
-get_data(driver)
-login(driver)
-
-### Run main page execution ###
-
-while True:
-    ## wait for main page element to be loaded
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[1]/div')))
-
-    ## find yesterday and tomorrow
+def yesterday():
     today = datetime.date.today()
     tDelta = datetime.timedelta(days=1)
 
@@ -214,7 +242,12 @@ while True:
     yester_Month = todayLess1.month
     yester_Day = todayLess1.day
 
-    yesterday = (str(yester_Year) + '/' + str(yester_Month) + '/' + str(yester_Day))
+    _yesterday = (str(yester_Year) + '/' + str(yester_Month) + '/' + str(yester_Day))
+    return _yesterday
+
+def tomorrow():
+    today = datetime.date.today()
+    tDelta = datetime.timedelta(days=1)
 
     todayPlus1 = (today + tDelta)
 
@@ -222,46 +255,59 @@ while True:
     tomorrow_Month = todayPlus1.month
     tomorrow_Day = todayPlus1.day
 
-    tomorrow = (str(tomorrow_Year) + '/' + str(tomorrow_Month) + '/' + str(tomorrow_Day))
+    _tomorrow = (str(tomorrow_Year) + '/' + str(tomorrow_Month) + '/' + str(tomorrow_Day))
+    return _tomorrow
+
+def loadMain():
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[1]/div')))
+
+## Call main load
+driver = init_driver()
+get_data(driver)
+login(driver)
+
+### Run main page execution ###
+while True:
+
+    ## Load expected elements
+    loadMain()
+    selectFaultsPage()
+    openControlsForm()
+
+    ## Check controls fields and assign key site
+    if not cfEvaluator():
+        mainResetBtn()
+        keySiteAssign()
+    else:
+        keySiteAssign()
 
 
-        #### Nav main page ####
 
-    ## select faults page
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[1]/div/div/div/div[7]')))
-    faultsField = driver.find_element(By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[1]/div/div/div/div[7]')
-    faultsField.click()
 
-    ## open controls form
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div/div/a/div')))
-    controlFilter = driver.find_element(By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div/div/a/div')
-    controlFilter.click()
-
-        ### set all fields ###
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeMain)))
-    buildingType = selectorFilter(buildingTypeMain, buildingTypeEllipsis)
-    print(buildingType.fieldValuator())
-    if not buildingType.fieldValuator():
-        buildingType.reset()
-
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
-    organization = selectorFilter(organizationMain, organizationEllipsis)
-    print(organization.siteValuator())
-    if not organization.siteValuator():
-        organization.reset()
-        organization.siteAssign()
-
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeMain)))
-    equipmentType = selectorFilter(equipmentTypeMain, equipmentTypeEllipsis)
-    print(equipmentType.fieldValuator())
-    if not equipmentType.fieldValuator():
-        equipmentType.reset()
-
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmMain)))
-    rmm = selectorFilter(rmmMain, rmmEllipsis)
-    print(rmm.fieldValuator())
-    if not rmm.fieldValuator():
-        rmm.reset()
+    # driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeMain)))
+    # buildingType = selectorFilter(buildingTypeMain, buildingTypeEllipsis)
+    # print(buildingType.fieldValuator())
+    # if not buildingType.fieldValuator():
+    #     buildingType.reset()
+    #
+    # driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
+    # organization = selectorFilter(organizationMain, organizationEllipsis)
+    # print(organization.siteValuator())
+    # if not organization.siteValuator():
+    #     organization.reset()
+    #     organization.siteAssign()
+    #
+    # driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeMain)))
+    # equipmentType = selectorFilter(equipmentTypeMain, equipmentTypeEllipsis)
+    # print(equipmentType.fieldValuator())
+    # if not equipmentType.fieldValuator():
+    #     equipmentType.reset()
+    #
+    # driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmMain)))
+    # rmm = selectorFilter(rmmMain, rmmEllipsis)
+    # print(rmm.fieldValuator())
+    # if not rmm.fieldValuator():
+    #     rmm.reset()
 
 
     break
