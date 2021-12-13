@@ -17,7 +17,7 @@ faultsField = ''
 
 buildingTypeMain = '//*[@id="block-792432fe-8b58-4d55-9162-76529c593d30"]/div/div/button'
 buildingTypeEllipsis = '//*[@id="block-792432fe-8b58-4d55-9162-76529c593d30"]/div/div/div/div[2]/button'
-buildingTypeReset = ''
+buildingTypeBlockID = ''
 
 organizationMain = '//*[@id="block-ccbe5567-76a4-406e-91c3-1a86b95c454d"]/div/div/button'
 organizationEllipsis = '//*[@id="block-ccbe5567-76a4-406e-91c3-1a86b95c454d"]/div/div/div/div[2]/button'
@@ -25,54 +25,55 @@ organizationSearchField = '/html/body/div[7]/div[2]/ul/form/div/input'
 organizationAllSites = '/html/body/div[7]/div[2]/ul/ul/span/div/div/div/label/input'
 organizationKeySiteSelector = '/html/body/div[7]/div[2]/ul/ul/div/div/div/li/a/div/div/div/label/input'
 organizationKeySite = 'aza5'
+organizationBlockID = ''
 
 equipmentTypeMain = '//*[@id="block-7e3b4118-46e9-4df5-af2e-46cbd2eef8d5"]/div/div/button'
 equipmentTypeEllipsis = '//*[@id="block-7e3b4118-46e9-4df5-af2e-46cbd2eef8d5"]/div/div/div/div[2]/button'
-equipmentTypeReset = ''
+equipmentTypeBlockID = ''
 
 rmmMain = '//*[@id="block-61a0986b-5a66-4e4e-bc48-11c6ad9b7048"]/div/div/button'
 rmmEllipsis = '//*[@id="block-61a0986b-5a66-4e4e-bc48-11c6ad9b7048"]/div/div/div/div[2]/button'
-rmmReset = ''
+rmmBlockID = ''
 
 criticalityMain = '//*[@id="block-c66be815-1336-4fa4-9058-b93589436ec0"]/div/div/button'
 criticalityEllipsis = '//*[@id="block-c66be815-1336-4fa4-9058-b93589436ec0"]/div/div/div/div[2]/button'
-criticalityReset = ''
+criticalityBlockID = ''
 
 oemMain = '//*[@id="block-6bac1e71-7c06-49d7-a4fc-99a6c99b1cb6"]/div/div/button'
 oemEllipsis = '//*[@id="block-6bac1e71-7c06-49d7-a4fc-99a6c99b1cb6"]/div/div/div/div[2]/button'
-oemReset = ''
+oemBlockID = ''
 
 hasAbnormalityMain = '//*[@id="block-2c8b708e-9464-4803-9ccf-9c240c0d3ffe"]/div/div/button'
 hasAbnormalityEllipsis = '//*[@id="block-2c8b708e-9464-4803-9ccf-9c240c0d3ffe"]/div/div/div/div[2]/button'
-hasAbnormalityReset = ''
+hasAbnormalityBlockID = ''
 
 descriptionMain = '//*[@id="block-9243388a-f655-466a-9c37-d783166108ad"]/div/div/button'
 descriptionEllipsis = '//*[@id="block-9243388a-f655-466a-9c37-d783166108ad"]/div/div/div/div[2]/button'
-descriptionReset = ''
+descriptionBlockID = ''
 
 equipmentIdMain = '//*[@id="block-67b3bf9a-a63a-4f02-9a3a-a18896b466d2"]/div/div/button'
 equipmentIdEllipsis = '//*[@id="block-67b3bf9a-a63a-4f02-9a3a-a18896b466d2"]/div/div/div/div[2]/button'
-equipmentIdReset = ''
+equipmentIdBlockID = ''
 
 areaMain = '//*[@id="block-c7189792-04ab-43a5-ae05-94042b8234ed"]/div/div/button'
 areaEllipsis = '//*[@id="block-c7189792-04ab-43a5-ae05-94042b8234ed"]/div/div/div/div[2]/button'
-areaReset = ''
+areaBlockID = ''
 
 subAreaMain = '//*[@id="block-275cf689-ae35-45d6-895e-22e31165a7d9"]/div/div/button'
 subAreaEllipsis = '//*[@id="block-275cf689-ae35-45d6-895e-22e31165a7d9"]/div/div/div/div[2]/button'
-subAreaReset = ''
+subAreaBlockID = ''
 
 locationMain = '//*[@id="block-b8ad9a7e-f493-4588-b686-e4bcdd8449ce"]/div/div/button'
 locationEllipsis = '//*[@id="block-b8ad9a7e-f493-4588-b686-e4bcdd8449ce"]/div/div/div/div[2]/button'
-locationReset = ''
+locationBlockID = ''
 
 startDateMain = '//*[@id="block-2c65d635-7ccc-46e5-989d-29fd6eab8b71"]/div/div/div[2]'
 startDateEllipsis = '//*[@id="block-2c65d635-7ccc-46e5-989d-29fd6eab8b71"]/div/div/div[1]/div[2]/button'
-startDateReset = ''
+startDateBlockID = ''
 
 endDateMain = '//*[@id="block-4888b434-d0f6-4310-908a-b18944003caf"]/div/div/div[2]'
 endDateEllipsis = '//*[@id="block-4888b434-d0f6-4310-908a-b18944003caf"]/div/div/div[1]/div[2]/button'
-endDateReset = ''
+endDateBlockID = ''
 
 yesterday = ''
 tomorrow = ''
@@ -81,7 +82,7 @@ tomorrow = ''
 def init_driver():
     s=Service('C:\Program Files (x86)\pyDrivers\chromedriver.exe')
     driver=webdriver.Chrome(service=s)
-    driver.wait = WebDriverWait(driver, 15)
+    driver.wait = WebDriverWait(driver, 30)
     return driver
 
 ## Initialize anomalies site request
@@ -121,20 +122,30 @@ def ellipsisElementsLoad():
     driver.wait.until(EC.presence_of_element_located((By.XPATH, endDateEllipsis)))
 
 def mainSelectorsLoad():
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, criticalityMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, oemMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, hasAbnormalityMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, descriptionMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentIdMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, areaMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, subAreaMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, locationMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, startDateMain)))
-    driver.wait.until(EC.presence_of_element_located((By.XPATH, endDateMain)))
+
+    while True:
+        try:
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, organizationMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentTypeMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, rmmMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, criticalityMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, oemMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, hasAbnormalityMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, descriptionMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, equipmentIdMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, areaMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, subAreaMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, locationMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, startDateMain)))
+            driver.wait.until(EC.presence_of_element_located((By.XPATH, endDateMain)))
+        except Exception:
+            refreshBtn = driver.find_element(By.XPATH, 'sheet_control_sample_refresh')
+            refreshBtn.click()
+            print('CLICKED CLICKED CLICKED')
+            continue
+        else:
+            break
 
 def selectFaultsPage():
     driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="application-content"]/div/div/div[2]/div[1]/div[2]/div/div[1]/div/div/div/div[7]')))
@@ -281,7 +292,15 @@ while True:
     else:
         keySiteAssign()
 
-
+    driver.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="block-2c65d635-7ccc-46e5-989d-29fd6eab8b71"]/div/div/div[2]/input')))
+    startDate = driver.find_element(By.XPATH, '//*[@id="block-2c65d635-7ccc-46e5-989d-29fd6eab8b71"]/div/div/div[2]/input')
+    startLabel = driver.find_element(By.XPATH,'//*[@id="block-2c65d635-7ccc-46e5-989d-29fd6eab8b71"]/div/div/div[2]/input' )
+    startDate.clear()
+    time.sleep(0.5)
+    startDate.send_keys(yesterday())
+    startLabel.click()
+    # '//*[@id="block-2c65d635-7ccc-46e5-989d-29fd6eab8b71"]/div/div/div[2]/input'
+    # '//*[@id="SHEET_CONTROL-2a5005ce-f4d9-4cad-89bb-fbb808604088"]/span'
 
 
     # driver.wait.until(EC.presence_of_element_located((By.XPATH, buildingTypeMain)))
